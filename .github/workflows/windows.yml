@@ -60,6 +60,7 @@ jobs:
         run: python -m pip install semver
 
       - name: Compare Versions
+        if: steps.previous-release.outputs.RELEASE_NAME != ''
         run: |
          version_current=${{ steps.extract-versions.outputs.CURRENT_VERSION }}
          version_release=${{ steps.extract-versions.outputs.PREVIOUS_VERSION }}
