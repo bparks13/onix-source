@@ -53,7 +53,9 @@ jobs:
           cat ./last-release/Source/OpenEphysLib.cpp
           echo "CURRENT_VERSION=$(cat ./Source/OpenEphysLib.cpp | grep -w -e 'info->libVersion' | grep -Eo "[0-9]+.[0-9]+.[0-9]+")" >> $GITHUB_OUTPUT
           echo "PREVIOUS_VERSION=$(cat ./last-release/Source/OpenEphysLib.cpp | grep -w -e 'info->libVersion' | grep -Eo "[0-9]+.[0-9]+.[0-9]+")" >> $GITHUB_OUTPUT
+      
       - name: Setup Python
+        if: steps.previous-release.outputs.RELEASE_NAME != ''
         uses: actions/setup-python@v5
         with:
           python-version: "3.10.12"
@@ -127,7 +129,8 @@ jobs:
         name: Artifact
         if-no-files-found: error
         path: |
-          Build
+          Build/Release
+          Build/x64
 
   deploy-windows:
 
@@ -136,7 +139,6 @@ jobs:
     if: github.event_name == 'release' && always() && !failure() && !cancelled()
 
     steps:
-
     - name: Download build folder
       uses: actions/download-artifact@v4
       with:
@@ -145,8 +147,8 @@ jobs:
     - name: deploy
       env:
 #        ARTIFACTORY_ACCESS_TOKEN: ${{ secrets.ARTIFACTORY_ACCESS_TOKEN }}
-        build_dir: "Build/Release"
-        liboni_dir: "Build/x64/Release"
+        build_dir: "Release"
+        liboni_dir: "x64/Release"
         package: ONIXSource-windows
       run: |
         plugin_api=${{ needs.build-windows.outputs.PLUGIN_API }}
