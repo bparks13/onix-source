@@ -117,8 +117,7 @@ jobs:
       id: build-plugin
       run: |
         cd Build
-        msbuild ALL_BUILD.vcxproj -p:Configuration=Release -p:Platform=x64
-        msbuild INSTALL.vcxproj -p:Configuration=Release -p:Platform=x64
+        msbuild OE_PLUGIN_onix-source.sln -p:Configuration=Release -p:Platform=x64
       shell: cmd
       
     - name: Collect artifact
