@@ -34,6 +34,7 @@ jobs:
           exit 0
           
       - name: Checkout last release version
+        if: steps.previous-release.outputs.RELEASE_NAME != ''
         uses: actions/checkout@v4
         with:
           ref: ${{ steps.previous-release.outputs.RELEASE_NAME }}
@@ -43,6 +44,7 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Extract Versions
+        if: steps.previous-release.outputs.RELEASE_NAME != ''
         id: extract-versions
         run: |
           ls -la
@@ -57,6 +59,7 @@ jobs:
           python-version: "3.10.12"
 
       - name: Install semver
+        if: steps.previous-release.outputs.RELEASE_NAME != ''
         run: python -m pip install semver
 
       - name: Compare Versions
@@ -114,6 +117,7 @@ jobs:
       id: build-plugin
       run: |
         cd Build
+        msbuild ALL_BUILD.vcxproj -p:Configuration=Release -p:Platform=x64
         msbuild INSTALL.vcxproj -p:Configuration=Release -p:Platform=x64
       shell: cmd
       
