@@ -8,6 +8,8 @@ if (NOT DEFINED GUI_BASE_DIR)
 	endif()
 endif()
 
+message(STATUS "Using CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+
 get_filename_component(PROJECT_FOLDER ${CMAKE_CURRENT_SOURCE_DIR} ABSOLUTE)
 get_filename_component(PLUGIN_NAME ${PROJECT_FOLDER} NAME)
 
